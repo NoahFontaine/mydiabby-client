@@ -1,7 +1,10 @@
 [project]
 name = "mydiabby-client"
 version = "0.1.0"
-description = "Add your description here"
+description = "API Client to access pump and CGM data"
+authors = [
+    { name = "Noah Fontaine", email = "noah.fontaine.uk@gmail.com" }
+]
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
