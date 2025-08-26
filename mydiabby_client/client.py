@@ -1,5 +1,6 @@
 import requests
 from .exceptions import AuthenticationError, APIError
+from typing import Any
 
 
 class MyDiabbyClient:
@@ -7,7 +8,8 @@ class MyDiabbyClient:
     def __init__(self,
                  username: str,
                  password: str,
-                 base_url: str ="https://app.mydiabby.com/api"):
+                 base_url: str ="https://app.mydiabby.com/api"
+                 ) -> None:
         
         self.username = username
         self.password = password
@@ -15,13 +17,14 @@ class MyDiabbyClient:
         self.session = requests.Session()
         self.token = None
 
-        self._authenticate()
+        self.__authenticate()
 
 
-    def _authenticate(self):
-        """Authenticate with MyDiabby and store Bearer token."""
+    def __authenticate(self) -> None:
+        """
+        Authenticates with MyDiabby and stores the Bearer token."""
         
-        url = f"{self.base_url}/getToken/"
+        url = f"{self.base_url}/getToken"
         payload = {"username": self.username,
                    "password": self.password,
                    "platform": "dt"}
@@ -44,16 +47,19 @@ class MyDiabbyClient:
         self.session.headers.update({"Authorization": f"Bearer {self.token}"})
 
 
-    def _request(self,
+    def __request(self,
                  method: str,
-                 endpoint: str, **kwargs):
-        """Internal helper to call API with auto-refresh on 401."""
+                 endpoint: str, **kwargs) -> Any:
+        """
+        Helper function that makes the necessary requests.
+        If a 401 error code occurs, it will re-authenticate and retry once.
+        """
         url = f"{self.base_url}{endpoint}"
         resp = self.session.request(method, url, **kwargs)
 
         if resp.status_code == 401:
             # re-authenticate and retry once
-            self._authenticate()
+            self.__authenticate()
             resp = self.session.request(method, url, **kwargs)
 
         if not resp.ok:
@@ -67,11 +73,15 @@ class MyDiabbyClient:
         return response
 
 
-    def get_account(self):
-        """Fetch account info."""
-        return self._request("GET", "/account/")
+    def get_account(self) -> Any:
+        """
+        Fetch info about the user, as a json.
+        """
+        return self.__request("GET", "/account")
 
 
-    def get_data(self):
-        """Fetch all diabetes data."""
-        return self._request("GET", "/data/")
+    def get_data(self) -> Any:
+        """
+        Fetch all CGM and pump data, as a json.
+        """
+        return self.__request("GET", "/data")
