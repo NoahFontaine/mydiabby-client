@@ -15,7 +15,7 @@ pip install mydiabby-client
 Import the package in your Python code:
 
 ```python
-import mydiabby_client
+from mydiabby_client import MyDiabbyClient
 ```
 
 Initialise the client as:
