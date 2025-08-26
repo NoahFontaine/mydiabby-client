@@ -8,8 +8,7 @@ __pycache__/
 
 test.py
 uv.lock
-account.json
-data.json
+*.json
 
 # Distribution / packaging
 .Python
