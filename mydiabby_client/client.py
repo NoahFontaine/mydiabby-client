@@ -16,7 +16,7 @@ class MyDiabbyClient:
 
     def authenticate(self):
         """Authenticate with MyDiabby and store Bearer token."""
-        url = f"{self.base_url}/getToken"
+        url = f"{self.base_url}/getToken/"
         payload = {"username": self.username, "password": self.password, "platform": "dt"}
         headers = {"Content-Type": "application/json", "Accept": "application/json, text/plain, */*"}
 
@@ -24,9 +24,12 @@ class MyDiabbyClient:
         if resp.status_code != 200:
             raise AuthenticationError(f"Failed to authenticate: {resp.text}")
 
-        data = resp.json()
+        try:
+            data = resp.json()
+        except requests.JSONDecodeError:
+            raise AuthenticationError("Invalid JSON response")
 
-        self.token = data.get("token")  # adjust key if different
+        self.token = data.get("token")
         if not self.token:
             raise AuthenticationError("No token in response")
 
@@ -46,12 +49,17 @@ class MyDiabbyClient:
         if not resp.ok:
             raise APIError(f"API error {resp.status_code}: {resp.text}")
 
-        return resp.json()
+        try:
+            response = resp.json()
+        except requests.JSONDecodeError:
+            raise APIError("Invalid JSON response")
+
+        return response
 
 
     def get_account(self):
         """Fetch account info."""
-        return self._request("GET", "/account")
+        return self._request("GET", "/account/")
 
 
     def get_data(self):
