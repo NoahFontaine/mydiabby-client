@@ -1,4 +1,4 @@
-# Structure of the keys in the 'data' key in data.json:
+# Structure of the keys in the `data` key of the output of `MyDiabbyClient.get_pump_data()`:
 
 ### 1. `closed_loop_mode`:
 
