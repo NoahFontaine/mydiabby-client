@@ -7,7 +7,7 @@ import requests
 import logging
 from .exceptions import AuthenticationError, APIError
 from json.decoder import JSONDecodeError
-from typing import Any, Union
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -91,14 +91,14 @@ class MyDiabbyClient:
         return response
 
 
-    def get_account(self) -> dict:
+    def get_account_info(self) -> dict:
         """
         Fetch info about the user, as a json.
         """
         return self._request("GET", "/account")
 
 
-    def get_data(self) -> Union[dict, list]:
+    def get_pump_data(self) -> dict:
         """
         Fetch all CGM and pump data, as a json.
         """
