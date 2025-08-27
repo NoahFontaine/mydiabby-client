@@ -24,4 +24,4 @@ Initialise the client as:
 client = MyDiabbyClient(f"{username}", f"{password}")
 ```
 
-Docstrings are written in the source code to help you find the relevant methods. For the moment, the 2 most relevant are `client.get_account()` to get all the relevant account information and `client.get_data()` to access all the pump and CGM data that has been uploaded to MyDiabby.
+Docstrings are written in the source code to help you find the relevant methods. For the moment, the 2 most relevant are `client.get_account_info()` to get all the relevant account information and `client.get_pump_data()` to access all the pump and CGM data that has been uploaded to MyDiabby.
